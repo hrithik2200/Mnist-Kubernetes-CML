@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: inferjob
+    labels:
+        app: serviceapi
+        tier: backend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: serviceapi
+    template:
+        metadata:
+            labels:
+                app: serviceapi
+                tier: backend
+        spec:
+            containers:
+                - name: inference
+                  image: akohd/mnist_inference_hhd2023
+                  ports:
+                      - containerPort: 8000
+                  volumeMounts:
+                  - name: mnistvolumehhd2023
+                    mountPath: /models
+            volumes:
+              - name: mnistvolumehhd2023
+                persistentVolumeClaim:
+                  claimName: mnist-model-pvc

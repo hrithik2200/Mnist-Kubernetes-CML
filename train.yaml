@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: trainmnisthhd2023
+spec:
+  template:
+    metadata:
+      name: trainmnisthhd2023
+    spec:
+      containers:
+      - name: train
+        image: akohd/mnist_training_hhd2023
+        command: ["python3", "main.py","--epochs", "1"]
+        volumeMounts:
+        - name: mnistvolumehhd2023
+          mountPath: /models
+      restartPolicy: Never
+      volumes:
+        - name: mnistvolumehhd2023
+          persistentVolumeClaim:
+            claimName: mnist-model-pvc
